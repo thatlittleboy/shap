@@ -109,7 +109,8 @@ def _brute_force_tree_shap(tree, x):
     return phi / math.factorial(m)
 
 
-def test_xgboost_direct():
+@pytest.mark.parametrize('i', range(100))
+def test_xgboost_direct(i):
     xgboost = pytest.importorskip('xgboost')
 
     N = 100
