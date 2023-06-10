@@ -109,8 +109,9 @@ def _brute_force_tree_shap(tree, x):
     return phi / math.factorial(m)
 
 
-@pytest.mark.parametrize('i', range(100))
+@pytest.mark.parametrize('i', range(100), ids=lambda i: f'random_seed={i}')
 def test_xgboost_direct(i):
+    np.random.seed(i)
     xgboost = pytest.importorskip('xgboost')
 
     N = 100
