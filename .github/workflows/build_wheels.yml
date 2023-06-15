@@ -11,27 +11,29 @@ jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macOS-10.15]
+        os: [ubuntu-20.04, windows-2019, macOS-11]
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      # Used to host cibuildwheel
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-
-      - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==2.2.2
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
 
       - name: Build wheels
-        run: python -m cibuildwheel --output-dir wheelhouse
+        uses: pypa/cibuildwheel@v2.13.1
         env:
-          CIBW_SKIP: "cp27-* cp35-* pp* *-musllinux_*"
+          CIBW_SKIP: "cp36-* cp37-* pp* *-musllinux_* *-manylinux_i686 *_ppc64le *_s390x"
+          CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_ARCHS_LINUX: auto aarch64
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
           name: bdist_files
@@ -41,7 +43,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -51,7 +53,7 @@ jobs:
           python -m pip install pep517
           python -m pep517.build -s .
       - name: Upload sdist
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: sdist_files
           path: dist/*.tar.gz
