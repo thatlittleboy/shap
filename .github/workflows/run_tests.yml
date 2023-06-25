@@ -81,6 +81,7 @@ jobs:
           pip install --upgrade --upgrade-strategy eager '.[${{ matrix.extras }},plots]'
           which python
           echo ${{ env.pythonLocation }}
+          which pytest
           ls -lah ${{ env.pythonLocation }}/lib/python${{ matrix.python-version }}/site-packages/torch/
           ls -lah ${{ env.pythonLocation }}/lib/python${{ matrix.python-version }}/site-packages/torch/lib
       - name: Test with pytest
