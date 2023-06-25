@@ -41,15 +41,15 @@ jobs:
         extras: ["test"]
         include:
           # Also test on windows/mac, just one job each
-          - os: macos-3.11
+          - os: macos-latest
             python-version: "3.10"
             extras: "test"
-            name: macos-3.11
+            name: macos-3.10
           - os: macos-latest
             python-version: "3.11"
             extras: "test"
             name: macos-3.11
-          - os: macos-3.11
+          - os: macos-latest
             python-version: "3.11"
             extras: "test-core"
             name: core-3.11
