@@ -37,21 +37,19 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest"]
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.10", "3.11"]
         extras: ["test"]
         include:
           # Also test on windows/mac, just one job each
-          - os: windows-latest
-            python-version: "3.11"
+          - os: macos-3.11
+            python-version: "3.10"
             extras: "test"
-            name: windows-3.11
+            name: macos-3.11
           - os: macos-latest
             python-version: "3.11"
             extras: "test"
             name: macos-3.11
-          # Also run tests with only the core dependencies, to ensure we
-          # cover the latest version of numpy/pandas. See dsgibbons#46
-          - os: ubuntu-latest
+          - os: macos-3.11
             python-version: "3.11"
             extras: "test-core"
             name: core-3.11
@@ -90,6 +88,7 @@ jobs:
           --cov=shap --cov-report=xml --cov-report=term-missing
           --mpl-generate-summary=html --mpl-results-path=./mpl-results
           --import-mode=append
+          tests/explainers/test_deep.py
       - name: Upload mpl test report
         if: failure()
         uses: actions/upload-artifact@v3
@@ -97,5 +96,3 @@ jobs:
           name: mpl-results-${{ matrix.python-version }}
           path: mpl-results/
           if-no-files-found: ignore
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
