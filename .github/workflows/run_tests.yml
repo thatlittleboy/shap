@@ -72,6 +72,7 @@ jobs:
             ${{ env.pythonLocation }}/**/site-packages/pyspark*
             ${{ env.pythonLocation }}/**/site-packages/nvidia*
             ${{ env.pythonLocation }}/**/site-packages/torch*
+            ${{ env.pythonLocation }}/**/site-packages/functorch*
           key: ${{ runner.os }}-${{ matrix.python-version }}-${{ env.pythonLocation }}-${{ hashFiles('setup.py', 'pyproject.toml') }}-0
       - name: Install dependencies
         run: |
@@ -82,6 +83,7 @@ jobs:
           which python
           echo ${{ env.pythonLocation }}
           which pytest
+          ls -lah ${{ env.pythonLocation }}/lib/python${{ matrix.python-version }}/site-packages/ | grep "torch"
           ls -lah ${{ env.pythonLocation }}/lib/python${{ matrix.python-version }}/site-packages/torch/
           ls -lah ${{ env.pythonLocation }}/lib/python${{ matrix.python-version }}/site-packages/torch/lib
       - name: Test with pytest
