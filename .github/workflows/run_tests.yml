@@ -88,6 +88,7 @@ jobs:
           --cov=shap --cov-report=xml --cov-report=term-missing
           --mpl-generate-summary=html --mpl-results-path=./mpl-results
           --import-mode=append
+          tests/maskers
       - name: Upload mpl test report
         if: failure()
         uses: actions/upload-artifact@v3
