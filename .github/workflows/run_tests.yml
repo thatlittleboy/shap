@@ -80,7 +80,9 @@ jobs:
           # Using regular install NOT editable install: see GH #3020
           pip install --upgrade --upgrade-strategy eager '.[${{ matrix.extras }},plots]'
           which python
-          ls -lah ${{ env.pythonLocation }}/
+          echo ${{ env.pythonLocation }}
+          ls -lah ${{ env.pythonLocation }}/lib/python${{ matrix.python-version }}/site-packages/torch/
+          ls -lah ${{ env.pythonLocation }}/lib/python${{ matrix.python-version }}/site-packages/torch/lib
       - name: Test with pytest
         # Ensure we avoid adding current working directory to sys.path:
         # - Use "pytest" over "python -m pytest"
